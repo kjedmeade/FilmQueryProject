@@ -13,14 +13,14 @@ public class FilmQueryApp {
 
   public static void main(String[] args) throws SQLException {
     FilmQueryApp app = new FilmQueryApp();
-    app.test();
-//    app.launch();
+//    app.test();
+    app.launch();
   }
 
-  private void test() throws SQLException {
-    Film film = db.findFilmById(1);
-    System.out.println(film);
-  }
+//  private void test() throws SQLException {
+//    Film film = db.findFilmById(1);
+//    System.out.println(film);
+//  }
 
   private void launch() {
     Scanner input = new Scanner(System.in);
@@ -35,6 +35,7 @@ public class FilmQueryApp {
 		while (keepGoing) {
 			printMenu();
 			int answer = input.nextInt();
+			input.nextLine();
 			if (answer>=1 && answer <=3) {
 			switch (answer) {
 			case 1:
@@ -42,7 +43,7 @@ public class FilmQueryApp {
 				int answer2 = input.nextInt();
 				
 				try {
-					System.out.println(db.getFilmById(answer2).toString());
+					System.out.println(db.findFilmById(answer2).toString());
 
 				} catch (Exception e) {
 					System.out.println("Film not found");
@@ -52,7 +53,7 @@ public class FilmQueryApp {
 				System.out.println("Enter a keyword:");
 				String keyword = input.nextLine();
 				try {
-					System.out.println(db.findFilmByKeyword(keyword).toString());
+					System.out.println(db.findFilmsByKeyword(keyword).toString());
 				} catch (Exception e) {
 					System.out.println("Film not found");
 				}
@@ -68,7 +69,7 @@ public class FilmQueryApp {
 
 		}
 			else {
-				System.out.println("Enter a number between 1 and 3");
+				System.out.println("Please enter a number between 1 and 3");
 			}
 		}
   }
@@ -80,4 +81,5 @@ public void printMenu() {
 			System.out.println("3.Exit the application");
 
 		}
-}}
+}
+
