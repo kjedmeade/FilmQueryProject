@@ -40,14 +40,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
   	    ResultSet rs = stmt.executeQuery();
   	    while (rs.next()) {
   	    	newFilm = new Film();
-			int id2 = rs.getInt("film.id");
-			newFilm.setFilmId(id2);
+			newFilm.setFilmId(rs.getInt("film.id"));
 			newFilm.setTitle(rs.getString("film.title"));
   	    	newFilm.setReleaseYear(rs.getShort("film.release_year"));
   	    	newFilm.setRating(rs.getString("film.rating"));
   	    	newFilm.setDescription(rs.getString("film.description"));
   	    	newFilm.setLanguage(rs.getString("language.name"));
-  	    	newFilm.setActors(findActorsByFilmId(id2));
+  	    	newFilm.setActors(findActorsByFilmId(newFilm.getFilmId()));
   	    }
   	    rs.close();
   	    stmt.close();

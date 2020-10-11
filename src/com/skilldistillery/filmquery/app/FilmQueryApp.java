@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
-import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
   
@@ -32,15 +31,28 @@ public class FilmQueryApp {
 
   private void startUserInterface(Scanner input) {
 	  boolean keepGoing = true;
-		while (keepGoing) {
+		outer: while (keepGoing) {
 			printMenu();
-			int answer = input.nextInt();
+			int answer=0;
+			try {
+				 answer = input.nextInt();
+			} catch (Exception e) {
+				System.out.println("Your entry could not be processed. Please restart the program, and enter a number between 1 and 3. \n");
+				break;
+			}
+			
 			input.nextLine();
 			if (answer>=1 && answer <=3) {
 			switch (answer) {
 			case 1:
 				System.out.println("Please enter film ID:");
-				int answer2 = input.nextInt();
+				int answer2 = 0;
+						try {
+							answer2= input.nextInt();
+						} catch (Exception e) {
+							System.out.println("Your entry could not be processed.  Please restart the program. Enter film id in the form of an integer. \n");
+							break outer;
+						}
 				
 				try {
 					System.out.println(db.findFilmById(answer2).toString());

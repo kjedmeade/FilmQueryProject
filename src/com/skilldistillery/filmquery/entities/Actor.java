@@ -40,7 +40,7 @@ public class Actor {
 	}
 	@Override
 	public String toString() {
-		return "Actor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]\n";
+		return "\n Actor: FIRST NAME: " + firstName + ", LAST NAME: " + lastName + "\n";
 	}
 	@Override
 	public int hashCode() {
