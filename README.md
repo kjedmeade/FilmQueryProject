@@ -17,7 +17,7 @@ The startUserInterface() method contains a switch statement that processes user 
 *Taking User Input
 User input is retrieved using a scanner. The user is prompted to enter a number between 1 and 3. Depending on their answer, the user is then prompted to either enter a film id or a film keyword. Both options return film information as well as a list of actors from each film.
 
-##Classes, Objects, Interfaces
+## Classes, Objects, Interfaces
 
 *The Film and Actor classes/objects were created based on information found in the sdvid database. These objects are called in the DatabaseAccessorObject Class.
 
