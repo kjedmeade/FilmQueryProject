@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +121,87 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return actors;
 	}
 
+	public Film createFilm(Film film) throws SQLException {
+		  Connection conn = null;
+		  String user = "student";
+	  	  String pass = "student";
+		  try {
+		    conn = DriverManager.getConnection(url, user, pass);
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "INSERT INTO film (title, language_id)"
+		                     + " VALUES (?,?)";
+		    
+		    PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		    stmt.setString(1, film.getTitle());
+		    stmt.setInt(2, 1);
+//		    stmt.setString(2, film.getDescription());
+//		    stmt.setInt(3, film.getReleaseYear());
+//		    stmt.setInt(4, film.getLangId());
+//		    stmt.setInt(5, film.getRentalDuration());
+//		    stmt.setDouble(6, film.getRentalRate());
+//		    stmt.setInt(7, film.getLength());
+//		    stmt.setDouble(8, film.getReplacementCost());
+//		    stmt.setString(9, film.getRating());
+//		    stmt.setString(10, film.getSpecialFeatures());
+//		    
+		    int updateCount = stmt.executeUpdate();
+		    if (updateCount == 1) {
+		      ResultSet keys = stmt.getGeneratedKeys();
+		      if (keys.next()) {
+		        int newFilmId = keys.getInt(1);
+		        film.setFilmId(newFilmId);
+		        System.out.println(updateCount + " film has been added with id of " + newFilmId);
+		          }
+		        }
+		     else {
+		      film = null;
+		    }
+		    conn.commit(); // COMMIT TRANSACTION
+		  } catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    throw new RuntimeException("Error inserting actor " + film);
+		  }
+		  conn.close();
+		  return film;
+		}
 	
+	public boolean deleteFilm(Film film) throws SQLException {
+		  Connection conn = null;
+		  String user = "student";
+	  	  String pass = "student";
+		  try {
+		    conn = DriverManager.getConnection(url, user, pass);
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "DELETE FROM actor_id WHERE film_id = ?";
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, film.getFilmId());
+		    int updateCount = stmt.executeUpdate();
+		    sql = "DELETE FROM film WHERE id = ?";
+		    stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, film.getFilmId());
+		    updateCount = stmt.executeUpdate();
+		    conn.commit();             // COMMIT TRANSACTION
+		  }
+		  catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return false;
+		  }
+		 
+			conn.close();
+		  return true;
+		}
 
 //  	public List<Film> findFilmsByActorId(int actorId) {
 //  	  List<Film> films = new ArrayList<>();
